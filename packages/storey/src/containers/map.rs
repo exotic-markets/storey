@@ -1,3 +1,5 @@
+use storey_storage::Storage;
+
 use crate::storage::IterableStorage;
 use crate::storage::StorageBranch;
 use std::{borrow::Borrow, marker::PhantomData};
@@ -155,6 +157,7 @@ impl<K, V, S> MapAccess<K, V, S>
 where
     K: Key,
     V: Storable,
+    S: Storage,
 {
     /// Returns an immutable accessor for the inner container of this map.
     ///
@@ -192,7 +195,14 @@ where
 
         V::access_impl(StorageBranch::new(&self.storage, key))
     }
+}
 
+impl<K, V, S> MapAccess<K, V, S>
+where
+    K: Key,
+    V: Storable,
+    S: StorageMut,
+{
     /// Returns a mutable accessor for the inner container of this map.
     ///
     /// # Examples
@@ -231,13 +241,7 @@ where
 
         V::access_impl(StorageBranch::new(&mut self.storage, key))
     }
-}
 
-impl<K, V, S> MapAccess<K, V, S>
-where
-    S: StorageMut,
-    K: Key,
-{
     pub fn entry_remove<Q>(&mut self, key: &Q)
     where
         Q: Key + ?Sized,
@@ -323,7 +327,6 @@ mod tests {
 
     use mocks::backend::TestStorage;
     use mocks::encoding::TestEncoding;
-    use storey_storage::Storage as _;
 
     #[test]
     fn map() {
