@@ -11,7 +11,7 @@ edition = "2021"
 license = { workspace = true }
 
 [dependencies]
-cosmwasm-std = "2"
+cosmwasm-std = "1"
 rmp-serde = "1.1"
 serde = "1"
 
