@@ -16,3 +16,5 @@ mod encoding;
 
 pub use backend::CwStorage;
 pub use encoding::CwEncoding;
+
+pub use storey::containers::{BoundedIterableAccessor, IterableAccessor};
